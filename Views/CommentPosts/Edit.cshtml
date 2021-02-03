@@ -1,0 +1,64 @@
+﻿@model OrionBlog.Models.CommentPost
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>CommentPost</h4>
+<hr />
+<div class="row">
+    <div class="col">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CategoryPostId" />
+            <input type="hidden" asp-for="BlogUserId" />
+            <input type="hidden" asp-for="Moderated" />
+
+            @*<div class="form-group">
+                <label asp-for="CategoryPostId" class="control-label"></label>
+                <select asp-for="CategoryPostId" class="form-control" asp-items="ViewBag.CategoryPostId"></select>
+                <span asp-validation-for="CategoryPostId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BlogUserId" class="control-label"></label>
+                <select asp-for="BlogUserId" class="form-control" asp-items="ViewBag.BlogUserId"></select>
+                <span asp-validation-for="BlogUserId" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="CommentBody" class="control-label"></label>
+                <textarea asp-for="CommentBody" class="form-control"></textarea>
+                <span asp-validation-for="CommentBody" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="Moderated" class="control-label"></label>
+                <input asp-for="Moderated" class="form-control" />
+                <span asp-validation-for="Moderated" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="ModerationReason" class="control-label"></label>
+                <input asp-for="ModerationReason" class="form-control" />
+                <span asp-validation-for="ModerationReason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModeratedBody" class="control-label"></label>
+                <textarea asp-for="ModeratedBody" class="form-control"></textarea>
+                <span asp-validation-for="ModeratedBody" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
