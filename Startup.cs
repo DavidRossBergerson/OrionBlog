@@ -54,7 +54,30 @@ namespace OrionBlog
             //Services needed to send emails
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddScoped<IEmailSender, EmailService>();
-            
+
+            //Authentication using 3rd parties
+
+            services.AddAuthentication()
+               .AddGitHub(options =>
+               {
+                   options.ClientId = "bfd0a18d74a1e55d9084";
+                   options.ClientSecret = "98d57739bc9a39c112db105036a51c39804369fc";
+                   options.AccessDeniedPath = "/AccessDeniedPathInfo";
+               })
+                .AddFacebook(options =>
+                {
+                    options.AppId = "169410888288295";
+                    options.AppSecret = "02536d7528d742605dcbac556974dfb8";
+                    options.AccessDeniedPath = "/AccessDeniedPathInfo";
+                })
+               .AddGoogle(options =>
+               {
+                   options.ClientId = "74897765760-g8llrhic7d2b8cc8jve0q89palhabp8n.apps.googleusercontent.com";
+                   options.ClientSecret = "aze_wdJxLfuOCo5Xm4Y8HeBY";
+                   options.AccessDeniedPath = "/AccessDeniedPathInfo";
+               });
+               
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -39,11 +39,13 @@ namespace OrionBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CategoryPostId,BlogUserId,CommentBody,Moderated,ModerationReason,ModeratedBody,")] CommentPost commentPost)
+        public async Task<IActionResult> Create([Bind("CategoryPostId,CommentBody")] CommentPost commentPost)
         {
             if (ModelState.IsValid)
             {
                 commentPost.Created = DateTime.Now;
+
+                //How do i tell my program that the Id of the Author of this comment is the Id of the User
                 commentPost.BlogUserId = _userManager.GetUserId(User);
                 _context.Add(commentPost);
                 await _context.SaveChangesAsync();

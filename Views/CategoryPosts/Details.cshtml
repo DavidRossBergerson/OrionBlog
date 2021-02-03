@@ -58,6 +58,7 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<hr/>
 
 @if (User.Identity.IsAuthenticated)
 {
@@ -65,6 +66,7 @@
         <div class="col-8 offset-2">
             <form asp-controller="CommentPosts" asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                 <input type="hidden" name="CategoryPostId" value="@Model.Id" />
                 <div class="form-group">
                     <label class="control-label">Comment</label>
@@ -77,46 +79,71 @@
         </div>
     </div>
 }
-
-@foreach (var comment in Model.CommentPosts)
+else
 {
-    @Html.Raw(comment.CommentBody)
-    <p class="text-sm-center">@comment.BlogUser.Email</p>
+    <h1>Please Log in to Post a Comment</h1>
 }
 
+<hr/>
+
+@foreach (var comment in Model.CommentPosts.OrderByDescending(c => c.Created))
+{
 <div class="row">
     <div class="col">
-        <form asp-controller="CommentPosts" asp-action="Create">
-            
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" name="BlogUserId" value="@Model.Id" />
-            <input type="hidden" name="Moderated" value="@Model.Id" />
-            <div class="form-group">
-                <label class="control-label">Moderation Reason</label>
-                <textarea name="ModerationReason" class="form-control"></textarea>
-                @*<label asp-for="ModerationReason" class="control-label"></label>
-            <input asp-for="ModerationReason" class="form-control" />
-            <span asp-validation-for="ModerationReason" class="text-danger"></span>*@
-            </div>
-            <div class="form-group">
-                <label class="control-label">Moderated Body</label>
-                <textarea name="ModeratedBody" class="form-control"></textarea>
-
-
-                @*<div class="form-group">
-                    <label asp-for="ModeratedBody" class="control-label"></label>
-                    <textarea asp-for="ModeratedBody" class="form-control"></textarea>
-                    <span asp-validation-for="ModeratedBody" class="text-danger"></span>*@
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                </div>
-        </form>
+        @comment.BlogUser.FullName
     </div>
-</div>
+        <div class="col">
+            @Html.Raw(comment.CommentBody)
+        </div>
+           
+                <div class="col">
+                    @comment.Created.ToString("MMM dd, yyyy")
+                </div>
+            
+        
+ </div>  
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+}
+
+
+
+
+        @* Step2: List all of the comments already created for this Post *@
+
+        <div class="row">
+            <div class="col">
+                <form asp-controller="CommentPosts" asp-action="Create">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" name="BlogUserId" value="@Model.Id" />
+                    <input type="hidden" name="Moderated" value="@Model.Id" />
+                    <div class="form-group">
+                        <label class="control-label">Moderation Reason</label>
+                        <textarea name="ModerationReason" class="form-control"></textarea>
+                        @*<label asp-for="ModerationReason" class="control-label"></label>
+                        <input asp-for="ModerationReason" class="form-control" />
+                        <span asp-validation-for="ModerationReason" class="text-danger"></span>*@
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Moderated Body</label>
+                        <textarea name="ModeratedBody" class="form-control"></textarea>
+
+
+                        @*<div class="form-group">
+                        <label asp-for="ModeratedBody" class="control-label"></label>
+                        <textarea asp-for="ModeratedBody" class="form-control"></textarea>
+                        <span asp-validation-for="ModeratedBody" class="text-danger"></span>*@
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>

@@ -67,10 +67,30 @@
                     <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
                         <div>
                             <p>
+                               @{ 
+                                   var myClass = "";
+                                   var myText = "";
+                               }
+                                
                                 @foreach (var provider in Model.ExternalLogins)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
+                                    switch (provider.DisplayName)
+                                    {
+                                        case "GitHub":
+                                            myClass = "btn btn-dark btn-lg";
+                                            myText = $"Login using {provider.DisplayName}";
+                                            break;
+                                            case "Facebook":
+                                            myClass = "btn btn-primary btn-lg";
+                                            myText = $"Login using {provider.DisplayName}";
+                                            break;
+                                        case "Google":
+                                            myClass = "btn btn-info btn-lg";
+                                            myText = $"Login using {provider.DisplayName}";
+                                            break;
+                                    }
+                                    <button type="submit" class="@myClass" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                 }
                             </p>
                         </div>
                     </form>
