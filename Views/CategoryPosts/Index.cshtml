@@ -1,4 +1,7 @@
-﻿@model IEnumerable<OrionBlog.Models.CategoryPost>
+﻿@using OrionBlog.Services
+
+@inject IImageService imageService 
+@model IEnumerable<OrionBlog.Models.CategoryPost>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,6 +15,7 @@
 <table class="table">
     <thead>
         <tr>
+          <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
@@ -21,15 +25,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.PostBody)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BlogCategory.Name)
-            </th>
+           
             <th></th>
         </tr>
     </thead>
@@ -37,15 +33,18 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                <img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" class="img-fluid"/>
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-               @Html.Raw(item.Abstract)
+                @Html.Raw(item.Abstract)
             </td>
             <td>
-               @Html.Raw(item.PostBody)
+                @Html.Raw(item.PostBody)
             </td>
-         
+
             <td>
                 @Html.DisplayFor(modelItem => item.Created)
             </td>

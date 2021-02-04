@@ -1,4 +1,8 @@
-﻿@model OrionBlog.Models.CategoryPost
+﻿@using OrionBlog.Services
+@using OrionBlog.Models
+
+@inject IImageService imageService
+@model CategoryPost
 
 @{
     ViewData["Title"] = "Details";
@@ -9,6 +13,8 @@
 <div>
     <h4>CategoryPost</h4>
     <hr />
+
+    <img src="@imageService.DecodeFile(Model.ImageData, Model.ContentType )" class="img-fluid" />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
@@ -58,16 +64,16 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
-<hr/>
+<hr />
 
 @if (User.Identity.IsAuthenticated)
 {
     <div class="row">
         <div class="col-8 offset-2">
             <form asp-controller="CommentPosts" asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @Html.Hidden("CategoryPostId", Model.Id)
 
-                <input type="hidden" name="CategoryPostId" value="@Model.Id" />
+                <input type="hidden" asp-for="Slug" />
                 <div class="form-group">
                     <label class="control-label">Comment</label>
                     <textarea name="CommentBody" class="form-control"></textarea>
@@ -84,66 +90,68 @@ else
     <h1>Please Log in to Post a Comment</h1>
 }
 
-<hr/>
+<hr />
+
+@* Step2: List all of the comments already created for this Post *@
 
 @foreach (var comment in Model.CommentPosts.OrderByDescending(c => c.Created))
 {
-<div class="row">
-    <div class="col">
+    <div class="row">
+        <div class="col">
 
-        @comment.BlogUser.FullName
-    </div>
+            @comment.BlogUser.FullName
+        </div>
         <div class="col">
             @Html.Raw(comment.CommentBody)
         </div>
-           
-                <div class="col">
-                    @comment.Created.ToString("MMM dd, yyyy")
-                </div>
-            
-        
- </div>  
+
+        <div class="col">
+            @comment.Created.ToString("MMM dd, yyyy")
+        </div>
+
+
+    </div>
 
 }
 
 
 
 
-        @* Step2: List all of the comments already created for this Post *@
-
-        <div class="row">
-            <div class="col">
-                <form asp-controller="CommentPosts" asp-action="Create">
-
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <input type="hidden" asp-for="Id" />
-                    <input type="hidden" name="BlogUserId" value="@Model.Id" />
-                    <input type="hidden" name="Moderated" value="@Model.Id" />
-                    <div class="form-group">
-                        <label class="control-label">Moderation Reason</label>
-                        <textarea name="ModerationReason" class="form-control"></textarea>
-                        @*<label asp-for="ModerationReason" class="control-label"></label>
-                        <input asp-for="ModerationReason" class="form-control" />
-                        <span asp-validation-for="ModerationReason" class="text-danger"></span>*@
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Moderated Body</label>
-                        <textarea name="ModeratedBody" class="form-control"></textarea>
 
 
-                        @*<div class="form-group">
-                        <label asp-for="ModeratedBody" class="control-label"></label>
-                        <textarea asp-for="ModeratedBody" class="form-control"></textarea>
-                        <span asp-validation-for="ModeratedBody" class="text-danger"></span>*@
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
-                    </div>
-                </form>
+<div class="row">
+    <div class="col">
+        <form asp-controller="CommentPosts" asp-action="Create">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" name="BlogUserId" value="@Model.Id" />
+            <input type="hidden" name="Moderated" value="@Model.Id" />
+            <div class="form-group">
+                <label class="control-label">Moderation Reason</label>
+                <textarea name="ModerationReason" class="form-control"></textarea>
+                @*<label asp-for="ModerationReason" class="control-label"></label>
+                    <input asp-for="ModerationReason" class="form-control" />
+                    <span asp-validation-for="ModerationReason" class="text-danger"></span>*@
             </div>
-        </div>
+            <div class="form-group">
+                <label class="control-label">Moderated Body</label>
+                <textarea name="ModeratedBody" class="form-control"></textarea>
 
-        <div>
-            <a asp-action="Index">Back to List</a>
-        </div>
+
+                @*<div class="form-group">
+                    <label asp-for="ModeratedBody" class="control-label"></label>
+                    <textarea asp-for="ModeratedBody" class="form-control"></textarea>
+                    <span asp-validation-for="ModeratedBody" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

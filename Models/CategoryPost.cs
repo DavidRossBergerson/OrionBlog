@@ -31,6 +31,14 @@ namespace OrionBlog.Models
         public DateTime? Updated { get; set; }
         public string Slug { get; set; }
 
+        //I need to add properties for storing images
+        [Display(Name = "Choose Image")]
+        public byte[] ImageData { get; set; }
+        public string ContentType { get; set; }
+
+
+
+
         //Navigational properties:
         public virtual BlogCategory BlogCategory { get; set; }
 

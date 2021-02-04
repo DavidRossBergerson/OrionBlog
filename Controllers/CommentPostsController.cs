@@ -39,7 +39,7 @@ namespace OrionBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryPostId,CommentBody")] CommentPost commentPost)
+        public async Task<IActionResult> Create([Bind("CategoryPostId,CommentBody")] CommentPost commentPost, string slug)
         {
             if (ModelState.IsValid)
             {
@@ -47,10 +47,10 @@ namespace OrionBlog.Controllers
 
                 //How do i tell my program that the Id of the Author of this comment is the Id of the User
                 commentPost.BlogUserId = _userManager.GetUserId(User);
+                
                 _context.Add(commentPost);
                 await _context.SaveChangesAsync();
-
-                var slug = (await _context.CategoryPost.FindAsync(commentPost.CategoryPostId)).Slug;
+                
                 return RedirectToAction("Details", "CategoryPosts", new { slug });
             }
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "UserName", commentPost.BlogUserId);

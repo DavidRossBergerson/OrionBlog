@@ -48,6 +48,9 @@ namespace OrionBlog
             //This is how I register a custom class as a service
             services.AddTransient<ISlugService, BasicSlugService>();
 
+            //Register our new BasicImageService
+            services.AddTransient<IImageService, BasicImageService>();
+
            
 
 

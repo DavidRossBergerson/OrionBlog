@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,11 +18,16 @@ namespace OrionBlog.Controllers
     {
         private readonly ApplicationDbContext _context;
         private ISlugService _slugService;
+        private readonly IImageService _imageService;
 
-        public CategoryPostsController(ApplicationDbContext context, ISlugService slugService)
+        public CategoryPostsController(
+            ApplicationDbContext context, 
+            ISlugService slugService,
+            IImageService imageService)
         {
             _context = context;
             _slugService = slugService;
+            _imageService = imageService;
         }
 
         // GET: CategoryPosts
@@ -103,12 +110,19 @@ namespace OrionBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsProductionReady")] CategoryPost categoryPost)
+        public async Task<IActionResult> Create([Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsProductionReady")] CategoryPost categoryPost, IFormFile formFile)
         {
             if (ModelState.IsValid)
             {
                 categoryPost.Created = DateTime.Now;
 
+                //I can only work with the incoming image if it is not null
+
+
+                categoryPost.ContentType = _imageService.RecordContentType(formFile);
+                categoryPost.ImageData = await _imageService.EncodeFileAsync(formFile);
+                
+               
                 var slug = _slugService.URLFriendly(categoryPost.Title);
                 if (_slugService.IsUnique(_context, slug))
                 {
