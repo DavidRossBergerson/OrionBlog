@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OrionBlog.Data;
 using OrionBlog.Models;
 using System;
 using System.Collections.Generic;
@@ -15,18 +17,24 @@ namespace OrionBlog.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _dbContext;
         private readonly MailSettings _mailSettings;
 
-        public HomeController(ILogger<HomeController> logger, IEmailSender emailSender, IOptions<MailSettings> mailSettings)
+        public HomeController(ILogger<HomeController> logger,
+            IEmailSender emailSender, 
+            IOptions<MailSettings> mailSettings,
+            ApplicationDbContext dbContext)
         {
             _logger = logger;
             _emailSender = emailSender;
+            _dbContext = dbContext;
             _mailSettings = mailSettings.Value;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var categories = await _dbContext.BlogCategory.ToListAsync();
+            return View(categories);
         }
 
         public IActionResult Privacy()

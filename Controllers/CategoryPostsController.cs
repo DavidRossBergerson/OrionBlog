@@ -37,6 +37,14 @@ namespace OrionBlog.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        public async Task<IActionResult> BlogPosts(int? id)
+        {
+            return View("Index", await _context.CategoryPost.Where(p => p.BlogCategoryId == id).ToListAsync());
+        }
+
+       
+        
+        
         public IActionResult CategoryIndex(int? id)
         {
 
@@ -110,7 +118,8 @@ namespace OrionBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsProductionReady")] CategoryPost categoryPost, IFormFile formFile)
+        public async Task<IActionResult> Create([Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsProductionReady")] CategoryPost categoryPost, 
+            IFormFile formFile)
         {
             if (ModelState.IsValid)
             {

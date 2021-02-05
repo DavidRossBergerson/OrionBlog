@@ -1,66 +1,58 @@
-﻿@using OrionBlog.Services
+﻿ @using OrionBlog.Services
 
+@model IEnumerable<CategoryPost>
 @inject IImageService imageService 
-@model IEnumerable<OrionBlog.Models.CategoryPost>
 
-@{
-    ViewData["Title"] = "Index";
-}
+    <!-- Page Header -->
+<header class="masthead" style="background-image: url('img/home-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>Clean Blog</h1>
+                    <span class="subheading">A Blog by David R. Bergerson</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 
-<h1>Index</h1>
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+         @foreach (var post in Model)
+         {
+            <div class="row">
+                <div class="col">
+                    <img src="@imageService.DecodeFile(post.ImageData, post.ContentType)" class="img-fluid" />
+                </div>
+                <div class="col">
+                    <div class="post-preview">
+                        <a asp-action="Details" asp-route-slug="@post.Slug">
+                            <h2 class="post-title">
+                                @post.Title
+                            </h2>
+                            <h3 class="post-subtitle">
+                                @Html.Raw(post.Abstract)
+                            </h3>
+                        </a>
+                        <p class="post-meta">
+                            Written by
+                            <a href="#">David R. Bergerson</a>
+                            on @post.Created.ToString("MMM dd, yyyy")
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+         }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-          <th></th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Abstract)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PostBody)
-            </th>
-           
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" class="img-fluid"/>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.Raw(item.Abstract)
-            </td>
-            <td>
-                @Html.Raw(item.PostBody)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BlogCategory.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                @*<a asp-action="Details" asp-route-id="@item.Id">Details</a>*@
-                <a asp-action="Details" asp-route-slug="@item.Slug">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+            <!-- Pager -->
+            <div class="clearfix">
+                <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>
