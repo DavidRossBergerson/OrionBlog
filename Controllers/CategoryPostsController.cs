@@ -35,7 +35,7 @@ namespace OrionBlog.Controllers
         // GET: CategoryPosts
         public async Task<IActionResult> Index(int? pageNumber, string searchString)
         {
-            ViewData["HeaderImage"] = @"~/img/home-bg.jpg";
+            
             ViewData["SearchString"] = searchString;
 
             //I want to look at the incoming pageNumber variable and either usit it

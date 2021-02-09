@@ -66,9 +66,12 @@
                     @*The search string*@
                     <input type="hidden" name="searchString" value="@ViewBag.SearchString" />
 
-                    <button type="submit" name="pageNumber"  class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber-1)">
-                        <i class="fa fa-arrow-left"></i>
-                    </button>
+                    @if (ViewBag.TtlPages > 1)
+                    {
+                <button type="submit" name="pageNumber" class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber-1)">
+                    <i class="fa fa-arrow-left"></i>
+                </button> } 
+
                     @*The Page Number will have to be something transmitted by the button*@
                     @for (var loop = 1; loop <= ViewBag.TtlPages; loop++)
                     {
@@ -77,12 +80,15 @@
                         {
                             myClass = "btn-primary";
                         }
-                <button class="btn btn-sm @myClass" type="submit" name="pageNumber" value="@loop">@loop</button>}
+                <button class="btn btn-sm @myClass" type="submit" name="pageNumber" value="@loop">@loop</button>
+                     }
                     
-                    <button name="pageNumber" type="submit" class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber+1)">
-                        <i class="fa fa-arrow-right"></i>
-                    </button>
-                    
+                    @if (ViewBag.TtlPages > 1)
+                    {
+                        <button name="pageNumber" type="submit" class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber + 1)">
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+                    }
 
                 </form>
             </div>
@@ -97,4 +103,5 @@
         </div>
     </div>
 </div>
+
 
