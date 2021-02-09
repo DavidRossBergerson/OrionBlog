@@ -20,34 +20,75 @@
 
 <!-- Main Content -->
 <div class="container">
+
+    
+
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-         @foreach (var post in Model)
-         {
-            <div class="row">
-                <div class="col">
-                    <img src="@imageService.DecodeFile(post.ImageData, post.ContentType)" class="img-fluid" />
-                </div>
-                <div class="col">
-                    <div class="post-preview">
-                        <a asp-action="Details" asp-route-slug="@post.Slug">
-                            <h2 class="post-title">
-                                @post.Title
-                            </h2>
-                            <h3 class="post-subtitle">
-                                @Html.Raw(post.Abstract)
-                            </h3>
-                        </a>
-                        <p class="post-meta">
-                            Written by
-                            <a href="#">David R. Bergerson</a>
-                            on @post.Created.ToString("MMM dd, yyyy")
-                        </p>
-                    </div>
+            @foreach (var post in Model)
+            {
+        <div class="row">
+            <div class="col">
+                <img src="@imageService.DecodeFile(post.ImageData, post.ContentType)" class="img-fluid" />
+            </div>
+            <div class="col">
+                <div class="post-preview">
+                    <a asp-action="Details" asp-route-slug="@post.Slug">
+                        <h2 class="post-title">
+                            @post.Title
+                        </h2>
+                        <h3 class="post-subtitle">
+                            @Html.Raw(post.Abstract)
+                        </h3>
+                       </a>
+
+                    <p class="post-meta">
+                        Written by
+                        <a href="#">David R. Bergerson</a>
+                        on @post.Created.ToString("MMM dd, yyyy")
+                    </p>
                 </div>
             </div>
-            <hr>
-         }
+        </div>
+                        <hr>}
+
+
+            <div class="row">
+                <div class="col">
+                    @ViewBag.PageXofY
+                </div>
+            </div>
+
+            <div class="row">
+            <div class="col">
+                <form asp-action="Index" name="get">
+
+                    @*The search string*@
+                    <input type="hidden" name="searchString" value="@ViewBag.SearchString" />
+
+                    <button type="submit" name="pageNumber"  class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber-1)">
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+                    @*The Page Number will have to be something transmitted by the button*@
+                    @for (var loop = 1; loop <= ViewBag.TtlPages; loop++)
+                    {
+                        var myClass = "btn-outline-primary";
+                        if (loop == (int)ViewBag.PageNumber)
+                        {
+                            myClass = "btn-primary";
+                        }
+                <button class="btn btn-sm @myClass" type="submit" name="pageNumber" value="@loop">@loop</button>}
+                    
+                    <button name="pageNumber" type="submit" class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber+1)">
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                    
+
+                </form>
+            </div>
+        </div>
+
+
 
             <!-- Pager -->
             <div class="clearfix">
@@ -56,3 +97,4 @@
         </div>
     </div>
 </div>
+

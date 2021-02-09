@@ -30,11 +30,86 @@ namespace OrionBlog.Controllers
             _imageService = imageService;
         }
 
+
+
         // GET: CategoryPosts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber, string searchString)
         {
-            var applicationDbContext = _context.CategoryPost.Include(c => c.BlogCategory);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["HeaderImage"] = @"~/img/home-bg.jpg";
+            ViewData["SearchString"] = searchString;
+
+            //I want to look at the incoming pageNumber variable and either usit it
+            //Or force it to be 1 and then use 1
+            //pageNumber ??= 1;
+            pageNumber = pageNumber == null || pageNumber <= 0 ? 1 : pageNumber;
+            ViewData["PageNumber"] = pageNumber;
+
+            //Define an arbitrary page size
+            
+
+            int pageSize = 3, ttlRecords = 0, ttlPages = 0;
+
+
+            
+
+            //Either use the search string or not
+            IQueryable<CategoryPost> result = null;
+            if(!string.IsNullOrEmpty (searchString))
+            {
+
+                //I have to search my records for the presence of the search string
+                result = _context.CategoryPost.AsQueryable();
+                searchString = searchString.ToLower();
+
+                result = result.Where(cp => cp.Title.ToLower().Contains(searchString) ||
+                                            cp.PostBody.ToLower().Contains(searchString) ||
+                                            cp.Abstract.ToLower().Contains(searchString) ||
+                                            cp.CommentPosts.Any(c => c.CommentBody.ToLower().Contains(searchString) ||
+                                                                     c.BlogUser.FirstName.ToLower().Contains(searchString) ||
+                                                                     c.BlogUser.LastName.ToLower().Contains(searchString) ||
+                                                                     c.BlogUser.DisplayName.ToLower().Contains(searchString) ||
+                                                                     c.BlogUser.Email.ToLower().Contains(searchString)));
+
+
+                ttlRecords = (await result.ToListAsync()).Count;
+            }
+            else
+            {
+                result = _context.CategoryPost.AsQueryable();
+                ttlRecords = (await result.ToListAsync()).Count;
+            }
+
+          
+             if((ttlRecords % pageSize) > 0)
+            {
+                ttlPages = Convert.ToInt32(ttlRecords / pageSize) + 1;
+            }
+            else
+            {
+                ttlPages = Convert.ToInt32(ttlRecords / pageSize);
+            }
+
+            
+            ViewData["TtlPages"] = ttlPages;
+
+            pageNumber = pageNumber > ttlPages ? ttlPages : pageNumber;
+
+            if (ttlPages > 0)
+            {
+                //Define a sentence telling the User what page they're on
+                ViewData["PageXofY"] = $"You are viewing page {pageNumber} of {ttlPages}";
+            }
+            else
+            {
+                ViewData["PageXofY"] = $"Your search string yielded no results";
+            }
+
+            
+
+            var skipCount = ((int)pageNumber - 1) * pageSize;
+            
+            var posts = (await result.OrderByDescending(cp => cp.Created).ToListAsync()).Skip(skipCount).Take(pageSize);
+            return View(posts);
         }
 
         public async Task<IActionResult> BlogPosts(int? id)

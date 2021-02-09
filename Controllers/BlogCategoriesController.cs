@@ -87,7 +87,8 @@ namespace OrionBlog.Controllers
                 blogCategory.Created = DateTime.Now;
                 _context.Add(blogCategory);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(blogCategory);
         }

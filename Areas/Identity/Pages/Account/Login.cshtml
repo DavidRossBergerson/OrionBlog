@@ -5,6 +5,21 @@
     ViewData["Title"] = "Log in";
 }
 
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('img/home-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>Clean Blog</h1>
+                    <span class="subheading">A Blog by David R. Bergerson</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
 <h1>@ViewData["Title"]</h1>
 <div class="row">
     <div class="col-md-4">
@@ -67,11 +82,11 @@
                     <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
                         <div>
                             <p>
-                               @{ 
-                                   var myClass = "";
-                                   var myText = "";
-                               }
-                                
+                                @{
+                                    var myClass = "";
+                                    var myText = "";
+                                }
+
                                 @foreach (var provider in Model.ExternalLogins)
                                 {
                                     switch (provider.DisplayName)
@@ -80,7 +95,7 @@
                                             myClass = "btn btn-dark btn-lg";
                                             myText = $"Login using {provider.DisplayName}";
                                             break;
-                                            case "Facebook":
+                                        case "Facebook":
                                             myClass = "btn btn-primary btn-lg";
                                             myText = $"Login using {provider.DisplayName}";
                                             break;
@@ -90,7 +105,7 @@
                                             break;
                                     }
                                     <button type="submit" class="@myClass" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                 }
+                                }
                             </p>
                         </div>
                     </form>
