@@ -64,7 +64,7 @@ namespace OrionBlog
                .AddGitHub(options =>
                {
                    options.ClientId = "d9c638d25a053950e4c7";
-                   options.ClientSecret = "e4130856add2c5a9130c55b320ad81a86824ba37";
+                   options.ClientSecret = "0eded162399e542d48c9c57bc1ce63b5323137db";
                    options.AccessDeniedPath = "/AccessDeniedPathInfo";
                })
                 //.AddFacebook(options =>
