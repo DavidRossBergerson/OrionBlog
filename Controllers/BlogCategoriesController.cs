@@ -21,6 +21,7 @@ namespace OrionBlog.Controllers
         }
 
         // GET: BlogCategories
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.BlogCategory.ToListAsync());

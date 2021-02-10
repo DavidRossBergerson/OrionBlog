@@ -1,38 +1,102 @@
 ﻿@using OrionBlog.Services
 @model CategoryPost
-@inject IImageService imageService 
-
-    <!-- Page Header -->
-    <header class="masthead" style="background-image: url(@imageService.DecodeFile(Model.ImageData, Model.ContentType))">
-        <div class="overlay"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-md-10 mx-auto">
-                    <div class="post-heading">
-                        <h1>@Model.Title</h1>
-                        <h2 class="subheading">@Html.Raw(Model.Abstract)</h2>
-                        <span class="meta">
-                            Written by
-                            <a href="#">David R. Bergerson</a>
-                            on @Model.Created.ToString("MMM dd, yyyy")
-                        </span>
-                    </div>
+@inject IImageService imageService
+<!-- Page Header -->
+<header class="masthead" style="background-image: url(@imageService.DecodeFile(Model.ImageData, Model.ContentType))">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="post-heading">
+                    <h1>@Model.Title</h1>
+                    <h2 class="subheading">@Html.Raw(Model.Abstract)</h2>
+                    <span class="meta">
+                        Written by
+                        <a href="#">David R. Bergerson</a>
+                        on @Model.Created.ToString("MMM dd, yyyy")
+                    </span>
                 </div>
             </div>
         </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                @Html.Raw(Model.PostBody);
+            </div>
+        </div>
+    </div>
+</article>
+
+<hr>
+
+@if (User.Identity.IsAuthenticated)
+{
+<div class="row">
+    <div class="col-8 offset-2">
+        <form asp-controller="CommentPosts" asp-action="Create">
+            @Html.Hidden("CategoryPostId", Model.Id)
+
+            <input type="hidden" asp-for="Slug" />
+            <div class="form-group">
+                <label class="control-label">Comment</label>
+                <textarea name="CommentBody" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div> }
+            else
+            {
+<h1>Please Log in to Post a Comment</h1>}
+
+
+
+@* Step2: List all of the comments already created for this Post *@
+
+@foreach (var comment in Model.CommentPosts.OrderByDescending(c => c.Created))
+{
+@*<div class="container">
+    <div class="row">
+        <div class="col">
+
+            @comment.BlogUser.FullName
+        </div>
+        <div class="col">
+            @Html.Raw(comment.CommentBody)
+        </div>
+
+        <div class="col">
+            @comment.Created.ToString("MMM dd, yyyy")
+        </div>
+
+    </div>
+</div>*@
+<div class="card container">
+
+    <header class="container">
+        <h4>@comment.BlogUser.FullName:</h4>
     </header>
 
-    <!-- Post Content -->
-    <article>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-md-10 mx-auto">
-                   @Html.Raw(Model.PostBody);
-                </div>
-            </div>
-        </div>
-    </article>
+    <div class="container">
+        <p>@Html.Raw(comment.CommentBody)</p>
+    </div>
 
-    <hr>
+    <footer class="container">
+        <h5>@comment.Created.ToString("MMM dd, yyyy")</h5>
+    </footer>
+    @if (User.IsInRole("Administrator"))
+    {
+    <a asp-controller="CommentPosts"  asp-action="Edit" asp-route-id="@comment.Id">Edit</a>
+    <a asp-controller="CommentPosts" asp-action="Delete" asp-route-id="@comment.Id">Delete</a>
+    }
+</div>
+                }
 
 

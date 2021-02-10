@@ -2,30 +2,33 @@
 @inject SignInManager<BlogUser> SignInManager
 @inject UserManager<BlogUser> UserManager
 
-<ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    //This line of code uses the built in UserManager to find a specific record in the ASPNetUser table
-    //by finding the username
-    var person = await UserManager.FindByNameAsync(User.Identity.Name);
 
-    <li class="nav-item">
-        <a  class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @person.DisplayName!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            @*<input value="Logout" type="submit" class="nav-link"/>*@
-        </form>
-        <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">Logout</a>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
-</ul>
+        
+            <ul class="navbar-nav" style="justify-content:end">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    //This line of code uses the built in UserManager to find a specific record in the ASPNetUser table
+                    //by finding the username
+                    var person = await UserManager.FindByNameAsync(User.Identity.Name);
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @person.FirstName!</a>
+                    </li>
+                    <li class="nav-item">
+                        <form class="form-inline" id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            @*<input value="Logout" type="submit" class="nav-link"/>*@
+                        </form>
+                        <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">Logout</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    </li>
+                }
+            </ul>
+        

@@ -83,7 +83,7 @@ namespace OrionBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryPostId,BlogUserId,CommentBody,Created,Moderated,ModerationReason,ModeratedBody")] CommentPost commentPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryPostId,BlogUserId,CommentBody,Moderated,ModerationReason,ModeratedBody")] CommentPost commentPost)
         {
             if (id != commentPost.Id)
             {
@@ -117,6 +117,40 @@ namespace OrionBlog.Controllers
         }
 
         private bool CommentPostExists(int id)
+        {
+            return _context.CommentPost.Any(e => e.Id == id);
+        }
+
+        // GET: CommentPosts/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var commentPost = await _context.CommentPost
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (commentPost == null)
+            {
+                return NotFound();
+            }
+
+            return View(commentPost);
+        }
+
+        // POST: CommentPosts/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var commentPost = await _context.CommentPost.FindAsync(id);
+            _context.CommentPost.Remove(commentPost);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool CommentPostsExists(int id)
         {
             return _context.CommentPost.Any(e => e.Id == id);
         }

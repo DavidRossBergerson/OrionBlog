@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog - Start Bootstrap Theme</title>
+    <title>Orion Blog - Start Bootstrap Theme</title>
 
     <!-- Bootstrap core CSS -->
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
@@ -26,44 +26,75 @@
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-        <div class="container">
+    <nav class="navbar navbar-expand-xl navbar-light fixed-top" id="mainNav">
+        <div class="container container-fluid">
+
             @*<a class="navbar-brand" href="index.html">OrionBlog</a>*@
             <a class="navbar-brand" asp-controller="Home" asp-action="Index">OrionBlog</a>
+            <ul class="list-inline text-center">
+                <li class="list-inline-item">
+                    <a href="#">
+                        <span class="fa-stack fa-sm">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#">
+                        <span class="fa-stack fa-sm">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+            </ul>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
+
+                    @if (User.IsInRole("Administrator"))
+                    {
+
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="BlogCategories" asp-action="Index">Blogs</a>
+        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="CategoryPosts" asp-action="Create">NewPost</a>
+                        </li>}
+
                     <li>
-                        <form asp-controller="CategoryPosts" asp-action="Index" method="get" class="form-inline mr-5">
-                            <div class="row">
-                                <div class="col">
-                                    <input name="searchString" type="text" class="form-control" />
-                                </div>
-                                <div class="col">
-                                    <button type="submit" class="btn btn-dark btn-sm">
-                                        Search
-                                    </button>
-                                </div>
+                        <form asp-controller="CategoryPosts" asp-action="Index" method="get" class="form-inline">
+
+                            <div class="col form-check-label">
+                                <input name="searchString" type="text" class="form-control" placeholder="Search" />
+                                <button type="submit" class="btn">
+                                    <i class="fa fa-search fa-2x "></i>
+                                </button>
                             </div>
-
-
                         </form>
+                    <li class="nav-item">
+                        <a class="nav-link" style="font-size:large" asp-controller="CategoryPosts" asp-action="Index">Posts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="BlogCategories" asp-action="Index">Blogs</a>
+                        <a class="nav-link" style="font-size:large" asp-controller="CategoryPosts" asp-action="Index">Portfolio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="CategoryPosts" asp-action="Index">Posts</a>
-                    </li>
+
                     <partial name="_LoginPartial" />
                 </ul>
 
             </div>
         </div>
     </nav>
+
+
+
+
+
+
 
 
 
@@ -81,15 +112,7 @@
                             <a href="#">
                                 <span class="fa-stack fa-lg">
                                     <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                    <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
                                 </span>
                             </a>
                         </li>
@@ -102,21 +125,13 @@
                             </a>
                         </li>
                     </ul>
-                    <p class="copyright text-muted">Copyright &copy; Your Website 2020</p>
+                    <p class="copyright text-muted">David R. Bergerson / Orion Blog 2021</p>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- SummerNote -->
 
-    <script src="//cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $("#Description, #Abstract, #PostBody, #CommentBody").summernote();
-        });
-    </script>
 
     <!-- Bootstrap core JavaScript -->
     <script src="~/js/jquery.min.js"></script>
@@ -124,6 +139,15 @@
 
     <!-- Custom scripts for this template -->
     <script src="~/js/clean-blog.min.js"></script>
+
+    <!-- SummerNote -->
+    @*<script src="//cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#Description, #Abstract, #PostBody, #CommentBody").summernote();
+        });
+    </script>*@
 
 
 

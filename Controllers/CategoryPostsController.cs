@@ -21,7 +21,7 @@ namespace OrionBlog.Controllers
         private readonly IImageService _imageService;
 
         public CategoryPostsController(
-            ApplicationDbContext context, 
+            ApplicationDbContext context,
             ISlugService slugService,
             IImageService imageService)
         {
@@ -33,9 +33,10 @@ namespace OrionBlog.Controllers
 
 
         // GET: CategoryPosts
+
         public async Task<IActionResult> Index(int? pageNumber, string searchString)
         {
-            
+
             ViewData["SearchString"] = searchString;
 
             //I want to look at the incoming pageNumber variable and either usit it
@@ -45,16 +46,16 @@ namespace OrionBlog.Controllers
             ViewData["PageNumber"] = pageNumber;
 
             //Define an arbitrary page size
-            
+
 
             int pageSize = 3, ttlRecords = 0, ttlPages = 0;
 
 
-            
+
 
             //Either use the search string or not
             IQueryable<CategoryPost> result = null;
-            if(!string.IsNullOrEmpty (searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
 
                 //I have to search my records for the presence of the search string
@@ -79,8 +80,8 @@ namespace OrionBlog.Controllers
                 ttlRecords = (await result.ToListAsync()).Count;
             }
 
-          
-             if((ttlRecords % pageSize) > 0)
+
+            if ((ttlRecords % pageSize) > 0)
             {
                 ttlPages = Convert.ToInt32(ttlRecords / pageSize) + 1;
             }
@@ -89,7 +90,7 @@ namespace OrionBlog.Controllers
                 ttlPages = Convert.ToInt32(ttlRecords / pageSize);
             }
 
-            
+
             ViewData["TtlPages"] = ttlPages;
 
             pageNumber = pageNumber > ttlPages ? ttlPages : pageNumber;
@@ -104,10 +105,10 @@ namespace OrionBlog.Controllers
                 ViewData["PageXofY"] = $"Your search string yielded no results";
             }
 
-            
+
 
             var skipCount = ((int)pageNumber - 1) * pageSize;
-            
+
             var posts = (await result.OrderByDescending(cp => cp.Created).ToListAsync()).Skip(skipCount).Take(pageSize);
             return View(posts);
         }
@@ -117,10 +118,10 @@ namespace OrionBlog.Controllers
             return View("Index", await _context.CategoryPost.Where(p => p.BlogCategoryId == id).ToListAsync());
         }
 
-       
-        
-        
-        public IActionResult CategoryIndex(int? id)
+
+
+
+        public async Task<IActionResult> CategoryIndex(int? id, string searchString, int? pageNumber)
         {
 
 
@@ -129,11 +130,90 @@ namespace OrionBlog.Controllers
                 return NotFound();
             }
             //Write a LINQ statement that uses the Id to get all of the Blog Posts with the CategoryId FK = id
-            var posts = _context.CategoryPost.Where(cp => cp.BlogCategoryId == id).Include(c => c.BlogCategory).ToList();
+            //var posts = _context.CategoryPost.Where(cp => cp.BlogCategoryId == id).Include(c => c.BlogCategory).ToList();
 
             //Once I have my Blog posts I want to display them in the Index view
-            return View("index", posts);
+            //return View("index", posts);
+
+
+            ViewData["SearchString"] = searchString;
+
+            //I want to look at the incoming pageNumber variable and either usit it
+            //Or force it to be 1 and then use 1
+            //pageNumber ??= 1;
+            pageNumber = pageNumber == null || pageNumber <= 0 ? 1 : pageNumber;
+            ViewData["PageNumber"] = pageNumber;
+
+            //Define an arbitrary page size
+
+
+            int pageSize = 3, ttlRecords = 0, ttlPages = 0;
+
+
+
+
+            //Either use the search string or not
+            IQueryable<CategoryPost> result = null;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+
+                //I have to search my records for the presence of the search string
+                result = _context.CategoryPost.Where(cp => cp.BlogCategoryId == id).Include(c => c.BlogCategory).AsQueryable();
+                searchString = searchString.ToLower();
+
+                result = result.Where(cp => cp.Title.ToLower().Contains(searchString) ||
+                                            cp.PostBody.ToLower().Contains(searchString) ||
+                                            cp.Abstract.ToLower().Contains(searchString) ||
+                                            cp.CommentPosts.Any(c => c.CommentBody.ToLower().Contains(searchString) ||
+                                                                     c.BlogUser.FirstName.ToLower().Contains(searchString) ||
+                                                                     c.BlogUser.LastName.ToLower().Contains(searchString) ||
+                                                                     c.BlogUser.DisplayName.ToLower().Contains(searchString) ||
+                                                                     c.BlogUser.Email.ToLower().Contains(searchString)));
+
+
+                ttlRecords = (await result.ToListAsync()).Count;
+            }
+            else
+            {
+                result = _context.CategoryPost.Where(cp => cp.BlogCategoryId == id).Include(c => c.BlogCategory).AsQueryable();
+                ttlRecords = (await result.ToListAsync()).Count;
+            }
+
+
+            if ((ttlRecords % pageSize) > 0)
+            {
+                ttlPages = Convert.ToInt32(ttlRecords / pageSize) + 1;
+            }
+            else
+            {
+                ttlPages = Convert.ToInt32(ttlRecords / pageSize);
+            }
+
+
+            ViewData["TtlPages"] = ttlPages;
+
+            pageNumber = pageNumber > ttlPages ? ttlPages : pageNumber;
+
+            if (ttlPages > 0)
+            {
+                //Define a sentence telling the User what page they're on
+                ViewData["PageXofY"] = $"You are viewing page {pageNumber} of {ttlPages}";
+            }
+            else
+            {
+                ViewData["PageXofY"] = $"Your search string yielded no results";
+            }
+
+
+
+            var skipCount = ((int)pageNumber - 1) * pageSize;
+
+            var posts = (await result.OrderByDescending(cp => cp.Created).ToListAsync()).Skip(skipCount).Take(pageSize);
+
+            return View("Index", posts);
+
         }
+
 
         // GET: CategoryPosts/Details/5 Before adding custom route
 
@@ -193,7 +273,7 @@ namespace OrionBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsProductionReady")] CategoryPost categoryPost, 
+        public async Task<IActionResult> Create([Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsProductionReady")] CategoryPost categoryPost,
             IFormFile formFile)
         {
             if (ModelState.IsValid)
@@ -205,8 +285,8 @@ namespace OrionBlog.Controllers
 
                 categoryPost.ContentType = _imageService.RecordContentType(formFile);
                 categoryPost.ImageData = await _imageService.EncodeFileAsync(formFile);
-                
-               
+
+
                 var slug = _slugService.URLFriendly(categoryPost.Title);
                 if (_slugService.IsUnique(_context, slug))
                 {
@@ -239,8 +319,8 @@ namespace OrionBlog.Controllers
             {
                 return NotFound();
             }
-
             var categoryPost = await _context.CategoryPost.FindAsync(id);
+
             if (categoryPost == null)
             {
                 return NotFound();
@@ -254,7 +334,7 @@ namespace OrionBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsProductionReady,Created,Slug")] CategoryPost categoryPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsProductionReady,Created,Slug")] CategoryPost categoryPost, IFormFile formFile)
         {
             if (id != categoryPost.Id)
             {
@@ -263,8 +343,17 @@ namespace OrionBlog.Controllers
 
             if (ModelState.IsValid)
             {
+
+
                 try
                 {
+                    if (formFile != null)
+                    {
+                        categoryPost.ContentType = _imageService.RecordContentType(formFile);
+                        categoryPost.ImageData = await _imageService.EncodeFileAsync(formFile);
+                    }
+
+
                     var slug = _slugService.URLFriendly(categoryPost.Title);
                     if (slug != categoryPost.Slug)
                     {

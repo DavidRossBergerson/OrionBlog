@@ -4,13 +4,13 @@
 @inject IImageService imageService 
 
     <!-- Page Header -->
-<header class="masthead" style="background-image: url('img/home-bg.jpg')">
+<header class="masthead" style="background-image: url('/img/CategoryHeader.jfif')">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div class="site-heading">
-                    <h1>Clean Blog</h1>
+                    <h1>Orion Blog</h1>
                     <span class="subheading">A Blog by David R. Bergerson</span>
                 </div>
             </div>
@@ -40,13 +40,18 @@
                         <h3 class="post-subtitle">
                             @Html.Raw(post.Abstract)
                         </h3>
-                       </a>
+                    </a>
 
                     <p class="post-meta">
                         Written by
                         <a href="#">David R. Bergerson</a>
                         on @post.Created.ToString("MMM dd, yyyy")
                     </p>
+
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@post.Id">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@post.Id">Delete</a>}
                 </div>
             </div>
         </div>
@@ -68,21 +73,21 @@
 
                     @if (ViewBag.TtlPages > 1)
                     {
-                <button type="submit" name="pageNumber" class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber-1)">
-                    <i class="fa fa-arrow-left"></i>
-                </button> } 
+                        <button type="submit" name="pageNumber" class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber-1)">
+                            <i class="fa fa-arrow-left"></i>
+                        </button>
 
-                    @*The Page Number will have to be something transmitted by the button*@
-                    @for (var loop = 1; loop <= ViewBag.TtlPages; loop++)
-                    {
-                        var myClass = "btn-outline-primary";
-                        if (loop == (int)ViewBag.PageNumber)
+                        @*The Page Number will have to be something transmitted by the button*@
+                        @for (var loop = 1; loop <= ViewBag.TtlPages; loop++)
                         {
-                            myClass = "btn-primary";
+                            var myClass = "btn-outline-primary";
+                            if (loop == (int)ViewBag.PageNumber)
+                            {
+                                myClass = "btn-primary";
+                            }
+                            <button class="btn btn-sm @myClass" type="submit" name="pageNumber" value="@loop">@loop</button>
                         }
-                <button class="btn btn-sm @myClass" type="submit" name="pageNumber" value="@loop">@loop</button>
-                     }
-                    
+                    }
                     @if (ViewBag.TtlPages > 1)
                     {
                         <button name="pageNumber" type="submit" class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber + 1)">

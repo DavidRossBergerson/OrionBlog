@@ -1,5 +1,6 @@
 ﻿@model OrionBlog.Models.CategoryPost
-
+@using OrionBlog.Services 
+@inject IImageService imageService
 @{
     ViewData["Title"] = "Edit";
 }
@@ -10,13 +11,15 @@
 <hr />
 <div class="row">
     <div class="col">
-        <form asp-action="Edit">
+        <form enctype="multipart/form-data" asp-action="Edit">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="Created" />
             <input type="hidden" asp-for="Slug" />
+            <input type="hidden" asp-for="ImageData" />
+            <input type="hidden" asp-for="ContentType" />
 
             <div class="form-group">
                 <label asp-for="BlogCategoryId" class="control-label"></label>
@@ -42,6 +45,12 @@
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsProductionReady" /> @Html.DisplayNameFor(model => model.IsProductionReady)
                 </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageData" class="control-label"></label>
+                <input type="file" name="formFile" />
+                <img src="@imageService.DecodeFile(Model.ImageData, Model.ContentType)" class="img-fluid" />
+                <span asp-validation-for="ImageData" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
