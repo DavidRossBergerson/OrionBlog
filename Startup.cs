@@ -67,12 +67,12 @@ namespace OrionBlog
                    options.ClientSecret = "e4130856add2c5a9130c55b320ad81a86824ba37";
                    options.AccessDeniedPath = "/AccessDeniedPathInfo";
                })
-                .AddFacebook(options =>
-                {
-                    options.AppId = "";
-                    options.AppSecret = "";
-                    options.AccessDeniedPath = "/AccessDeniedPathInfo";
-                })
+                //.AddFacebook(options =>
+                //{
+                //    options.AppId = "";
+                //    options.AppSecret = "";
+                //    options.AccessDeniedPath = "/AccessDeniedPathInfo";
+                //})
                .AddGoogle(options =>
                {
                    options.ClientId = "74897765760-g8llrhic7d2b8cc8jve0q89palhabp8n.apps.googleusercontent.com";
