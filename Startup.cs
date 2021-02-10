@@ -69,8 +69,8 @@ namespace OrionBlog
                })
                 .AddFacebook(options =>
                 {
-                    options.AppId = "169410888288295";
-                    options.AppSecret = "02536d7528d742605dcbac556974dfb8";
+                    options.AppId = "d9c638d25a053950e4c7";
+                    options.AppSecret = "e4130856add2c5a9130c55b320ad81a86824ba37";
                     options.AccessDeniedPath = "/AccessDeniedPathInfo";
                 })
                .AddGoogle(options =>
