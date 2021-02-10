@@ -60,13 +60,13 @@ namespace OrionBlog
 
             //Authentication using 3rd parties
 
-            services.AddAuthentication()
-               .AddGitHub(options =>
-               {
-                   options.ClientId = "d9c638d25a053950e4c7";
-                   options.ClientSecret = "0eded162399e542d48c9c57bc1ce63b5323137db";
-                   options.AccessDeniedPath = "/AccessDeniedPathInfo";
-               });
+            //services.AddAuthentication()
+            //   .AddGitHub(options =>
+            //   {
+            //       options.ClientId = "d9c638d25a053950e4c7";
+            //       options.ClientSecret = "0eded162399e542d48c9c57bc1ce63b5323137db";
+            //       options.AccessDeniedPath = "/AccessDeniedPathInfo";
+            //   });
                 //.AddFacebook(options =>
                 //{
                 //    options.AppId = "";
