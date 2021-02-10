@@ -19,6 +19,7 @@
             <input type="hidden" asp-for="Moderated" />
             <input type="hidden" asp-for="Created" />
 
+
             @*<div class="form-group">
             <label asp-for="CategoryPostId" class="control-label"></label>
             <select asp-for="CategoryPostId" class="form-control" asp-items="ViewBag.CategoryPostId"></select>
@@ -57,7 +58,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="CategoryPosts" asp-action="Details">Back to List</a>
 </div>
 
 @section Scripts {

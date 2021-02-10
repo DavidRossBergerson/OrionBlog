@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Npgsql;
 using OrionBlog.Data;
 using OrionBlog.Models;
 using System;
@@ -13,6 +16,37 @@ namespace OrionBlog.Utilities
 
     public static class DataUtility
     {
+        public static string GetConnectionString(IConfiguration configuration)
+        {
+            //The default connection string will come from appSettings like usual
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            //It will be automatically overwritten if we are running on Heroku
+            var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            return string.IsNullOrEmpty(databaseUrl) ? connectionString : BuildConnectionString(databaseUrl);
+        }
+
+        private static string BuildConnectionString(string databaseUrl)
+        {
+            //Provides an object representation of a uniform resource identifier (URI) and easy access to the parts of the URI.
+            var databaseUri = new Uri(databaseUrl);
+            var userInfo = databaseUri.UserInfo.Split(':');
+
+            //Provides a simple way to create and manage the contents of connection strings used by the NpgsplConnection class.
+            var builder = new NpgsqlConnectionStringBuilder
+            {
+                Host = databaseUri.Host,
+                Port = databaseUri.Port,
+                Username = userInfo[0],
+                Password = userInfo[1],
+                Database = databaseUri.LocalPath.TrimStart('/'),
+                SslMode = SslMode.Prefer,
+                TrustServerCertificate = true
+            };
+
+            return builder.ToString();
+        }
+
         public static async Task ManageDataAsync(IHost host)
         {
             //This technique is used to obtain references to services that get registered in the
@@ -21,12 +55,14 @@ namespace OrionBlog.Utilities
             var svcProvider = svcScope.ServiceProvider;
 
             //This dbContextSvc knows how to talk to the DB (aka _context)
-
+            var dbContextSvc = svcProvider.GetRequiredService<ApplicationDbContext>();
             //Service 1: An instance RoleManager
             var roleManagerSvc = svcProvider.GetRequiredService<RoleManager<IdentityRole>>();
             //Service 2: An instance of UserManager
             var userManagerSvc = svcProvider.GetRequiredService<UserManager<BlogUser>>();
 
+            //TsTEP 1: This is the programmatic equivalent to Update-Database
+            await dbContextSvc.Database.MigrateAsync();
             //Step 1: Add a few Roles into the system (Administrator & Moderator)
             await SeedRolesAsync(roleManagerSvc);
 

@@ -53,9 +53,7 @@ namespace OrionBlog.Controllers
                 
                 return RedirectToAction("Details", "CategoryPosts", new { slug });
             }
-            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "UserName", commentPost.BlogUserId);
-            ViewData["CategoryPostId"] = new SelectList(_context.CategoryPost, "Id", "Title", commentPost.CategoryPostId);
-            return View(commentPost);
+            return RedirectToAction("Details", "CategoryPosts", new { slug });
         }
 
         // GET: CommentPosts/Edit/5
@@ -83,7 +81,7 @@ namespace OrionBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryPostId,BlogUserId,CommentBody,Moderated,ModerationReason,ModeratedBody")] CommentPost commentPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryPostId,BlogUserId,Created,CommentBody,Moderated,ModerationReason,ModeratedBody")] CommentPost commentPost)
         {
             if (id != commentPost.Id)
             {

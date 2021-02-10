@@ -44,17 +44,18 @@
             <input type="hidden" asp-for="Slug" />
             <div class="form-group">
                 <label class="control-label">Comment</label>
-                <textarea name="CommentBody" class="form-control"></textarea>
+                <textarea required name="CommentBody" class="form-control"></textarea>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+            <div></div>
         </form>
     </div>
 </div> }
             else
             {
-<h1>Please Log in to Post a Comment</h1>}
+<h3>Please Log in to Post a Comment</h3>} <hr /> <br />
 
 
 
@@ -78,18 +79,19 @@
 
     </div>
 </div>*@
-<div class="card container">
+    <h2>Comments</h2><hr /><br />
+<div class="card">
 
-    <header class="container">
-        <h4>@comment.BlogUser.FullName:</h4>
+    <header class="card-header">
+        <h4>@comment.BlogUser.FullName</h4>
     </header>
 
-    <div class="container">
+    <div class="card-body">
         <p>@Html.Raw(comment.CommentBody)</p>
     </div>
 
-    <footer class="container">
-        <h5>@comment.Created.ToString("MMM dd, yyyy")</h5>
+    <footer class="card-footer">
+        <h6>@comment.Created.ToString("MMM dd, yyyy")</h6>
     </footer>
     @if (User.IsInRole("Administrator"))
     {

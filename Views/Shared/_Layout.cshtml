@@ -33,7 +33,7 @@
             <a class="navbar-brand" asp-controller="Home" asp-action="Index">OrionBlog</a>
             <ul class="list-inline text-center">
                 <li class="list-inline-item">
-                    <a href="#">
+                    <a target="_blank" href="https://www.linkedin.com/public-profile/in/david-bergerson-280656203?trk=people-guest_people_search-card&challengeId=AQGwapvmwdd2eQAAAXbjKfIdJHHN2BE7Z4y_y5ZhvYEAObfMY4nuZFEOh2JLDc_9D6Tv-gdfnyiSX7ADo26b8b-s7Ll1oZD-Hg&submissionId=687da4c0-be53-5816-7096-78e7beccff3c">
                         <span class="fa-stack fa-sm">
                             <i class="fas fa-circle fa-stack-2x"></i>
                             <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <li class="list-inline-item">
-                    <a href="#">
+                    <a target="_blank" href="https://github.com/DavidRossBergerson">
                         <span class="fa-stack fa-sm">
                             <i class="fas fa-circle fa-stack-2x"></i>
                             <i class="fab fa-github fa-stack-1x fa-inverse"></i>
@@ -59,12 +59,13 @@
                     @if (User.IsInRole("Administrator"))
                     {
 
-        <li class="nav-item">
-            <a class="nav-link" asp-controller="BlogCategories" asp-action="Index">Blogs</a>
-        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="CategoryPosts" asp-action="Create">NewPost</a>
-                        </li>}
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="BlogCategories" asp-action="Index">Blogs</a>
+                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="CategoryPosts" asp-action="Create">NewPost</a>
+                                </li>
+}
 
                     <li>
                         <form asp-controller="CategoryPosts" asp-action="Index" method="get" class="form-inline">
@@ -80,7 +81,7 @@
                         <a class="nav-link" style="font-size:large" asp-controller="CategoryPosts" asp-action="Index">Posts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="font-size:large" asp-controller="CategoryPosts" asp-action="Index">Portfolio</a>
+                        <a class="nav-link" style="font-size:large" asp-controller="Home" asp-action="Contact">Contact</a>
                     </li>
 
                     <partial name="_LoginPartial" />
@@ -109,7 +110,7 @@
                 <div class="col-lg-8 col-md-10 mx-auto">
                     <ul class="list-inline text-center">
                         <li class="list-inline-item">
-                            <a href="#">
+                            <a target="_blank" href="https://www.linkedin.com/public-profile/in/david-bergerson-280656203?trk=people-guest_people_search-card&challengeId=AQGwapvmwdd2eQAAAXbjKfIdJHHN2BE7Z4y_y5ZhvYEAObfMY4nuZFEOh2JLDc_9D6Tv-gdfnyiSX7ADo26b8b-s7Ll1oZD-Hg&submissionId=687da4c0-be53-5816-7096-78e7beccff3c">
                                 <span class="fa-stack fa-lg">
                                     <i class="fas fa-circle fa-stack-2x"></i>
                                     <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
@@ -117,7 +118,7 @@
                             </a>
                         </li>
                         <li class="list-inline-item">
-                            <a href="#">
+                            <a target="_blank" href="https://github.com/DavidRossBergerson">
                                 <span class="fa-stack fa-lg">
                                     <i class="fas fa-circle fa-stack-2x"></i>
                                     <i class="fab fa-github fa-stack-1x fa-inverse"></i>
