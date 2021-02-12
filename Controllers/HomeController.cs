@@ -33,7 +33,7 @@ namespace OrionBlog.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewData["HeaderImage"] = "/img/home-bg.jpg";
+            
             var categories = await _dbContext.BlogCategory.ToListAsync();
             return View(categories);
         }

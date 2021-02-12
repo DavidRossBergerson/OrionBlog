@@ -4,6 +4,21 @@
     ViewData["Title"] = "Create";
 }
 
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('/img/TechHeader.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>Orion Blog</h1>
+                    <span class="subheading">A Blog by <a class="text-white" target="_blank" href="https://david-bergerson-portfolio.netlify.app/"> David R. Bergerson</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
 <h1>Create</h1>
 
 <h4>CategoryPost</h4>
@@ -28,7 +43,7 @@
 
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <textarea asp-for="Title" class="form-control"></textarea>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
 

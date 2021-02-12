@@ -1,23 +1,23 @@
 ﻿@page
 @model ConfirmEmailChangeModel
 @{
-    ViewData["Title"] = "Confirm email change";
+    ViewData["Title"] = "Confirm Email Change";
 }
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('/img/reg-log-header.jfif')">
+<header class="masthead" style="background-image: url('/img/reg-log-head.jpg')">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div class="site-heading">
                     <h1>Orion Blog</h1>
-                    <span class="subheading">A Blog by David R. Bergerson</span>
+                    <span class="subheading">A Blog by <a class="text-white" target="_blank" href="https://david-bergerson-portfolio.netlify.app/"> David R. Bergerson</a>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="offset-5" >@ViewData["Title"]</h1>
 <partial name="_StatusMessage" model="Model.StatusMessage" />

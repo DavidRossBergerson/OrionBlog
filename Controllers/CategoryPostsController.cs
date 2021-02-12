@@ -17,7 +17,7 @@ namespace OrionBlog.Controllers
     public class CategoryPostsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private ISlugService _slugService;
+        private readonly ISlugService _slugService;
         private readonly IImageService _imageService;
 
         public CategoryPostsController(

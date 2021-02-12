@@ -21,29 +21,38 @@
     <!-- Custom styles for this template -->
     <link href="~/css/clean-blog.min.css" rel="stylesheet">
 
+    <!-- include libraries(jQuery, bootstrap) -->
+    <link href="//stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="//cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
+    
+
+
 </head>
 
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-xl navbar-light fixed-top" id="mainNav">
-        <div class="container container-fluid">
+    <div class="container container-fluid">
+        <nav class="navbar navbar-expand-xl navbar-light fixed-top" id="mainNav">
+
 
             @*<a class="navbar-brand" href="index.html">OrionBlog</a>*@
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">OrionBlog</a>
+            <a class="navbar-brand offset-1" asp-controller="Home" asp-action="Index">OrionBlog</a>
             <ul class="list-inline text-center">
                 <li class="list-inline-item">
                     <a target="_blank" href="https://www.linkedin.com/public-profile/in/david-bergerson-280656203?trk=people-guest_people_search-card&challengeId=AQGwapvmwdd2eQAAAXbjKfIdJHHN2BE7Z4y_y5ZhvYEAObfMY4nuZFEOh2JLDc_9D6Tv-gdfnyiSX7ADo26b8b-s7Ll1oZD-Hg&submissionId=687da4c0-be53-5816-7096-78e7beccff3c">
-                        <span class="fa-stack fa-sm">
-                            <i class="fas fa-circle fa-stack-2x"></i>
+                        <span class="fa-stack fa-lg">
+                            <i class="fas fa-circle fa-stack-2x" style="color:black"></i>
                             <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
                         </span>
                     </a>
                 </li>
                 <li class="list-inline-item">
                     <a target="_blank" href="https://github.com/DavidRossBergerson">
-                        <span class="fa-stack fa-sm">
-                            <i class="fas fa-circle fa-stack-2x"></i>
+                        <span class="fa-stack fa-lg">
+                            <i class="fas fa-circle fa-stack-2x fa" style="color:black"></i>
                             <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                         </span>
                     </a>
@@ -56,28 +65,20 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
 
-                    @if (User.IsInRole("Administrator"))
-                    {
+          
 
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="BlogCategories" asp-action="Index">Blogs</a>
-                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="CategoryPosts" asp-action="Create">NewPost</a>
-                                </li>
-}
+                    <li class="nav-item offset-9">
+                        <form asp-controller="CategoryPosts" asp-action="Index" method="get" class="form-inline ">
 
-                    <li>
-                        <form asp-controller="CategoryPosts" asp-action="Index" method="get" class="form-inline">
-
-                            <div class="col form-check-label">
-                                <input name="searchString" type="text" class="form-control" placeholder="Search" />
+                            <div class="form-group" role="group">
                                 <button type="submit" class="btn">
-                                    <i class="fa fa-search fa-2x "></i>
+                                    <i class="fa fa-search fa-2x" style="color: white"></i>
                                 </button>
+                                <input name="searchString" type="text" class="form-control " placeholder="Search" />
                             </div>
                         </form>
-                    <li class="nav-item">
+
+                    <li class="nav-item offset-11">
                         <a class="nav-link" style="font-size:large" asp-controller="CategoryPosts" asp-action="Index">Posts</a>
                     </li>
                     <li class="nav-item">
@@ -88,8 +89,9 @@
                 </ul>
 
             </div>
-        </div>
     </nav>
+            </div>
+    
 
 
 
@@ -105,6 +107,14 @@
 
     <!-- Footer -->
     <footer>
+        @if (User.IsInRole("Administrator"))
+        {
+    
+        <a class="nav-link" asp-controller="BlogCategories" asp-action="Index">Blogs</a>
+    
+                     
+                        <a class="nav-link" asp-controller="CategoryPosts" asp-action="Create">NewPost</a>
+                    }
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-10 mx-auto">
@@ -142,13 +152,18 @@
     <script src="~/js/clean-blog.min.js"></script>
 
     <!-- SummerNote -->
-    @*<script src="//cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            $("#Description, #Abstract, #PostBody, #CommentBody").summernote();
-        });
-    </script>*@
+    
+    
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+    <script>$(document).ready(function () {
+            $(" #Name, #Description, #Abstract, #PostBody, #CommentBody, #Title").summernote();
+        });</script>
 
 
 

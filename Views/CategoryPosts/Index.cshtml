@@ -4,14 +4,14 @@
 @inject IImageService imageService 
 
     <!-- Page Header -->
-<header class="masthead" style="background-image: url('/img/CategoryHeader.jfif')">
+<header class="masthead" style="background-image: url('/img/CategoryHeader.jpg')">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div class="site-heading">
                     <h1>Orion Blog</h1>
-                    <span class="subheading">A Blog by David R. Bergerson</span>
+                    <span class="subheading">A Blog by <a class="text-white" target="_blank" href="https://david-bergerson-portfolio.netlify.app/"> David R. Bergerson</a></span>
                 </div>
             </div>
         </div>
@@ -20,42 +20,53 @@
 
 <!-- Main Content -->
 <div class="container">
-
+    
     
 
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
             @foreach (var post in Model)
             {
-        <div class="row">
-            <div class="col">
-                <img src="@imageService.DecodeFile(post.ImageData, post.ContentType)" class="img-fluid" />
-            </div>
-            <div class="col">
-                <div class="post-preview">
-                    <a asp-action="Details" asp-route-slug="@post.Slug">
-                        <h2 class="post-title">
-                            @post.Title
-                        </h2>
-                        <h3 class="post-subtitle">
-                            @Html.Raw(post.Abstract)
-                        </h3>
-                    </a>
+                <div class="card" style="background-color: midnightblue">
+                    <div class="col">
+                        <img src="@imageService.DecodeFile(post.ImageData, post.ContentType)" class="img-fluid card-img-top mt-3" />
+                    </div>
+                    <div class="card-body">
+                        <div class="post-preview">
+                            <a class="stretched-link" asp-action="Details" asp-route-slug="@post.Slug">
+                                <h2 class="card-title">
+                                    @Html.Raw(post.Title)
+                                </h2>
+                                <h3 class="card-subtitle">
+                                    @Html.Raw(post.Abstract)
+                                </h3>
+                            </a>
 
-                    <p class="post-meta">
-                        Written by
-                        <a href="#">David R. Bergerson</a>
-                        on @post.Created.ToString("MMM dd, yyyy")
-                    </p>
+                            <div class="card-footer offset-6 bg-dark mt-4" style="color: white">
+                                Written by
+                                <b class="bg-dark" target="_blank" href="//david-bergerson-portfolio.netlify.app">David R. Bergerson</b>
+                                on @post.Created.ToString("MMM dd, yyyy")
+                            </div>
 
-                    @if (User.IsInRole("Administrator"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@post.Id">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@post.Id">Delete</a>}
+                            @*<div class="card" style="width:400px">
+                            <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+                            <div class="card-body">
+                                <h4 class="card-title">John Doe</h4>
+                                <p class="card-text">Some example text.</p>
+                                <a target="_blank" href="https://david-bergerson-portfolio.netlify.app" class="btn btn-primary">See Profile</a>
+                            </div>
+                        </div>*@
+
+
+
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-                        <hr>}
+                @if (User.IsInRole("Administrator"))
+                {
+                    <a asp-action="Edit" asp-route-id="@post.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@post.Id">Delete</a>}
+                <hr>}
 
 
             <div class="row">
@@ -65,41 +76,42 @@
             </div>
 
             <div class="row">
-            <div class="col">
-                <form asp-action="Index" name="get">
+                <div class="col">
+                    <form asp-action="Index" name="get">
 
-                    @*The search string*@
-                    <input type="hidden" name="searchString" value="@ViewBag.SearchString" />
+                        @*The search string*@
+                        <input type="hidden" name="searchString" value="@ViewBag.SearchString" />
 
-                    @if (ViewBag.TtlPages > 1)
-                    {
-                        <button type="submit" name="pageNumber" class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber-1)">
-                            <i class="fa fa-arrow-left"></i>
-                        </button>
-
-                        @*The Page Number will have to be something transmitted by the button*@
-                        @for (var loop = 1; loop <= ViewBag.TtlPages; loop++)
+                        @if (ViewBag.TtlPages > 1)
                         {
-                            var myClass = "btn-outline-primary";
-                            if (loop == (int)ViewBag.PageNumber)
-                            {
-                                myClass = "btn-primary";
-                            }
-                            <button class="btn btn-sm @myClass" type="submit" name="pageNumber" value="@loop">@loop</button>
-                        }
-                    }
-                    @if (ViewBag.TtlPages > 1)
-                    {
-                        <button name="pageNumber" type="submit" class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber + 1)">
-                            <i class="fa fa-arrow-right"></i>
-                        </button>
-                    }
+                            <button type="submit" name="pageNumber" class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber-1)">
+                                <i class="fa fa-arrow-left"></i>
+                            </button>
 
-                </form>
+                            @*The Page Number will have to be something transmitted by the button*@
+                            @for (var loop = 1; loop <= ViewBag.TtlPages; loop++)
+                            {
+                                var myClass = "btn-outline-primary";
+                                if (loop == (int)ViewBag.PageNumber)
+                                {
+                                    myClass = "btn-primary";
+                                }
+                                <button class="btn btn-sm @myClass" type="submit" name="pageNumber" value="@loop">@loop</button>
+                            }
+                        }
+                        @if (ViewBag.TtlPages > 1)
+                        {
+                            <button name="pageNumber" type="submit" class="btn btn-sm btn-dark" value="@(ViewBag.PageNumber + 1)">
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        }
+
+                    </form>
+                </div>
             </div>
         </div>
-
-
+    </div>
+</div>
 
 
 

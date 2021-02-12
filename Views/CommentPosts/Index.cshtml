@@ -4,6 +4,21 @@
     ViewData["Title"] = "Index";
 }
 
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('/img/TechHeader.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>Orion Blog</h1>
+                    <span class="subheading">A Blog by <a class="text-white" target="_blank" href="https://david-bergerson-portfolio.netlify.app/"> David R. Bergerson</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
 <h1>Index</h1>
 
 <p>
@@ -40,38 +55,39 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.Raw(item.CommentBody)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Moderated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModerationReason)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModeratedBody)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryPost.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BlogUser.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.Raw(item.CommentBody)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Moderated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModerationReason)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModeratedBody)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryPost.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BlogUser.Id)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

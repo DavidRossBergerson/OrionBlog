@@ -2,14 +2,14 @@
 
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('img/TechHeader.jfif')">
+<header class="masthead" style="background-image: url('/img/TechHeader.jpg')">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div class="site-heading">
                     <h1>Orion Blog</h1>
-                    <span class="subheading">A Blog by David R. Bergerson</span>
+                    <span class="subheading">A Blog by <a class="text-white" target="_blank" href="https://david-bergerson-portfolio.netlify.app/"> David R. Bergerson</a></span>
                 </div>
             </div>
         </div>
@@ -25,17 +25,17 @@
                 <div class="post-preview">
                     <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@category.Id">
                         <h2 class="post-title">
-                            @category.Name
+                            @Html.Raw(category.Name)
                         </h2>
                         <h3 class="post-subtitle">
                             @Html.Raw(category.Description)
                         </h3>
                     </a>
-                    <p class="post-meta">
+                    @*<p class="post-meta">
                         Written by
-                        <a href="#">David R. Bergerson</a>
+                        <a target="_blank" href="https://david-bergerson-portfolio.netlify.app">David R. Bergerson</a>
                         on @category.Created.ToString("MMM dd, yyyy")
-                    </p>
+                    </p>*@
                 </div>
                 <hr>
             }

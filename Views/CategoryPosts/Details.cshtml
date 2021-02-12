@@ -2,17 +2,17 @@
 @model CategoryPost
 @inject IImageService imageService
 <!-- Page Header -->
-<header class="masthead" style="background-image: url(@imageService.DecodeFile(Model.ImageData, Model.ContentType))">
+<header class="masthead " style="background-image: url(@imageService.DecodeFile(Model.ImageData, Model.ContentType))">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
-                <div class="post-heading">
-                    <h1>@Model.Title</h1>
+                <div class="post-heading" style="color: white">
+                    <h1>@Html.Raw(Model.Title)</h1>
                     <h2 class="subheading">@Html.Raw(Model.Abstract)</h2>
-                    <span class="meta">
+                    <span class="meta offset-3">
                         Written by
-                        <a href="#">David R. Bergerson</a>
+                        <a href="https://david-bergerson-portfolio.netlify.app">David R. Bergerson</a>
                         on @Model.Created.ToString("MMM dd, yyyy")
                     </span>
                 </div>
@@ -25,8 +25,8 @@
 <article>
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-md-10 mx-auto">
-                @Html.Raw(Model.PostBody);
+            <div class="card-body mx-auto">
+                @Html.Raw(Model.PostBody)
             </div>
         </div>
     </div>
@@ -36,69 +36,62 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-<div class="row">
-    <div class="col-8 offset-2">
-        <form asp-controller="CommentPosts" asp-action="Create">
-            @Html.Hidden("CategoryPostId", Model.Id)
+    <div class="row">
+        <div class="col-8 offset-2">
+            <form asp-controller="CommentPosts" asp-action="Create">
+                @Html.Hidden("CategoryPostId", Model.Id)
 
-            <input type="hidden" asp-for="Slug" />
-            <div class="form-group">
-                <label class="control-label">Comment</label>
-                <textarea required name="CommentBody" class="form-control"></textarea>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-            <div></div>
-        </form>
-    </div>
-</div> }
-            else
-            {
-<h3>Please Log in to Post a Comment</h3>} <hr /> <br />
+                <input type="hidden" asp-for="Slug" />
+                <div class="form-group">
+                    <label class="control-label">Comment</label>
+                    <textarea required name="CommentBody" class="form-control" placeholder="Max Characters: 750"></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Comment" class="btn btn-primary" />
+                </div>
+                <div></div>
+            </form>
+        </div>
+    </div> }
+else
+{
+    <h3>Please Log in to Post a Comment</h3>}
+<hr />
+<br />
 
 
 
 @* Step2: List all of the comments already created for this Post *@
-
+<h2 class="offset-5">Comments</h2>
+<br />
 @foreach (var comment in Model.CommentPosts.OrderByDescending(c => c.Created))
 {
-@*<div class="container">
-    <div class="row">
-        <div class="col">
+    <br />
+    <div class="container container-fluid">
+        <div class="row">
+            <div class="col-xs-6 offset-3">
+                <div class="card">
 
-            @comment.BlogUser.FullName
-        </div>
-        <div class="col">
-            @Html.Raw(comment.CommentBody)
-        </div>
+                    <header class="card-header">
+                        <h4>@comment.BlogUser.FullName</h4>
+                    </header>
 
-        <div class="col">
-            @comment.Created.ToString("MMM dd, yyyy")
-        </div>
+                    <div class="card-body">
+                        <p>@Html.Raw(comment.CommentBody)</p>
+                    </div>
 
+                    <footer class="card-footer">
+                        <h6>@comment.Created.ToString("MMM dd, yyyy")</h6>
+                    </footer>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <a asp-controller="CommentPosts" asp-action="Edit" asp-route-id="@comment.Id">Edit</a>
+                        <a asp-controller="CommentPosts" asp-action="Delete" asp-route-id="@comment.Id">Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
-</div>*@
-    <h2>Comments</h2><hr /><br />
-<div class="card">
-
-    <header class="card-header">
-        <h4>@comment.BlogUser.FullName</h4>
-    </header>
-
-    <div class="card-body">
-        <p>@Html.Raw(comment.CommentBody)</p>
-    </div>
-
-    <footer class="card-footer">
-        <h6>@comment.Created.ToString("MMM dd, yyyy")</h6>
-    </footer>
-    @if (User.IsInRole("Administrator"))
-    {
-    <a asp-controller="CommentPosts"  asp-action="Edit" asp-route-id="@comment.Id">Edit</a>
-    <a asp-controller="CommentPosts" asp-action="Delete" asp-route-id="@comment.Id">Delete</a>
-    }
-</div>
-                }
+}
 
 
