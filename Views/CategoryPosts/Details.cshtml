@@ -24,9 +24,11 @@
 <!-- Post Content -->
 <article>
     <div class="container">
-        <div class="row">
-            <div class="card-body mx-auto">
-                @Html.Raw(Model.PostBody)
+        <div class="card">
+            <div class="row">
+                <div class="card-body mx-auto">
+                    @Html.Raw(Model.PostBody)
+                </div>
             </div>
         </div>
     </div>
@@ -37,14 +39,14 @@
 @if (User.Identity.IsAuthenticated)
 {
     <div class="row">
-        <div class="col-8 offset-2">
+        <div class="col-8 offset-4">
             <form asp-controller="CommentPosts" asp-action="Create">
                 @Html.Hidden("CategoryPostId", Model.Id)
 
                 <input type="hidden" asp-for="Slug" />
                 <div class="form-group">
                     <label class="control-label">Comment</label>
-                    <textarea required name="CommentBody" class="form-control" placeholder="Max Characters: 750"></textarea>
+                    <textarea required name="CommentBody" class="form-control" placeholder="Max Characters: 750" style="border-radius: 25px; box-shadow: 15px 15px 5px grey;width:50%; height:100px"></textarea>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Comment" class="btn btn-primary" />
@@ -70,19 +72,19 @@ else
     <div class="container container-fluid">
         <div class="row">
             <div class="col-xs-6 offset-3">
-                <div class="card">
+                <div class="card" style=" border: 1px solid grey;">
 
-                    <header class="card-header">
+                    <div class="card-header">
                         <h4>@comment.BlogUser.FullName</h4>
-                    </header>
+                    </div>
 
-                    <div class="card-body">
+                    <div class="card-body text-white" style="background-color:Highlight; ">
                         <p>@Html.Raw(comment.CommentBody)</p>
                     </div>
 
-                    <footer class="card-footer">
+                    <div class="card-footer">
                         <h6>@comment.Created.ToString("MMM dd, yyyy")</h6>
-                    </footer>
+                    </div>
                     @if (User.IsInRole("Administrator"))
                     {
                         <a asp-controller="CommentPosts" asp-action="Edit" asp-route-id="@comment.Id">Edit</a>

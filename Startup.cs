@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using OrionBlog.Data;
 using OrionBlog.Models;
 using OrionBlog.Services;
@@ -38,7 +39,7 @@ namespace OrionBlog
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddDefaultUI() 
+                .AddDefaultUI()
                 .AddDefaultTokenProviders()
                .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -51,7 +52,7 @@ namespace OrionBlog
             //Register our new BasicImageService
             services.AddTransient<IImageService, BasicImageService>();
 
-           
+
 
 
             //Services needed to send emails
@@ -67,20 +68,33 @@ namespace OrionBlog
             //       options.ClientSecret = "0eded162399e542d48c9c57bc1ce63b5323137db";
             //       options.AccessDeniedPath = "/AccessDeniedPathInfo";
             //   });
-                //.AddFacebook(options =>
-                //{
-                //    options.AppId = "";
-                //    options.AppSecret = "";
-                //    options.AccessDeniedPath = "/AccessDeniedPathInfo";
-                //})
-               //.AddGoogle(options =>
-               //{
-               //    options.ClientId = "74897765760-g8llrhic7d2b8cc8jve0q89palhabp8n.apps.googleusercontent.com";
-               //    options.ClientSecret = "aze_wdJxLfuOCo5Xm4Y8HeBY";
-               //    options.AccessDeniedPath = "/AccessDeniedPathInfo";
-               //});
-               
+            //.AddFacebook(options =>
+            //{
+            //    options.AppId = "";
+            //    options.AppSecret = "";
+            //    options.AccessDeniedPath = "/AccessDeniedPathInfo";
+            //})
+            //.AddGoogle(options =>
+            //{
+            //    options.ClientId = "74897765760-g8llrhic7d2b8cc8jve0q89palhabp8n.apps.googleusercontent.com";
+            //    options.ClientSecret = "aze_wdJxLfuOCo5Xm4Y8HeBY";
+            //    options.AccessDeniedPath = "/AccessDeniedPathInfo";
+            //});
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { 
+                    Title = "OrionBlog", 
+                    Version = "v1", 
+                    Description = "OrionBlog API",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "David Bergerson",
+                        Email = "davidrossbergerson@gmail.com",
+                        Url = new Uri("https://david-bergerson-portfolio.netlify.app") //this should be your portfolio site
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,6 +111,17 @@ namespace OrionBlog
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI( c => 
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json","OrionBlog");
+                c.InjectJavascript("/swagger/swagger.js");
+                c.InjectStylesheet("/swagger/swagger.css");
+                c.DocumentTitle = "OrionBlog";
+            });
+
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -116,6 +141,8 @@ namespace OrionBlog
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+
+                endpoints.MapControllers();
             });
         }
     }
