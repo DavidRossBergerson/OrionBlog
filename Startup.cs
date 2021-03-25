@@ -59,6 +59,16 @@ namespace OrionBlog
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddScoped<IEmailSender, EmailService>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("DefaultPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
+
+
+
             //Authentication using 3rd parties
 
             //services.AddAuthentication()
@@ -129,6 +139,8 @@ namespace OrionBlog
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors("DefaultPolicy");
 
             app.UseEndpoints(endpoints =>
             {
