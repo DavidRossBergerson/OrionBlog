@@ -33,10 +33,10 @@
                     </div>
                     <div class="card-body">
                         <div class="post-preview">
-                            <a class="stretched-link" asp-action="Details" asp-route-slug="@post.Slug">
-                                <h2 class="card-title">
+                            <a class="stretched-link text-white" asp-action="Details" asp-route-slug="@post.Slug" >
+                                <h1 class="card-title">
                                     @Html.Raw(post.Title)
-                                </h2>
+                                </h1>
                                 <h3 class="card-subtitle">
                                     @Html.Raw(post.Abstract)
                                 </h3>
